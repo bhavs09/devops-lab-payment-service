@@ -47,6 +47,15 @@ pipeline {
                 sh 'mvn package -DskipTests'
             }
         }
+        stage('Docker Build') {
+            steps {
+                sh '''
+                    docker build \
+                        -t payment-service:${BUILD_NUMBER} \
+                        .
+                '''
+            }
+        }
 
         stage('Archive Artifact') {
             steps {
