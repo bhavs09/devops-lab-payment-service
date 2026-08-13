@@ -56,6 +56,17 @@ pipeline {
                 '''
             }
         }
+        stage('Security Scan') {
+            steps {
+                sh '''
+                    trivy image \
+                        --timeout 10m \
+                        --severity HIGH,CRITICAL \
+                        --exit-code 1 \
+                        payment-service:${BUILD_NUMBER}
+                '''
+            }
+        }
 
         stage('Archive Artifact') {
             steps {
