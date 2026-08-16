@@ -67,6 +67,7 @@ pipeline {
                 '''
             }
         }
+
         stage('Docker Push') {
             steps {
                 withCredentials([
@@ -84,14 +85,21 @@ pipeline {
                         docker tag payment-service:${BUILD_NUMBER} \
                             ${DOCKER_USERNAME}/payment-service:${BUILD_NUMBER}
 
+                        docker tag payment-service:${BUILD_NUMBER} \
+                            ${DOCKER_USERNAME}/payment-service:latest
+
                         docker push \
                             ${DOCKER_USERNAME}/payment-service:${BUILD_NUMBER}
+
+                        docker push \
+                            ${DOCKER_USERNAME}/payment-service:latest
 
                         docker logout
                     '''
                 }
             }
         }
+
         stage('Archive Artifact') {
             steps {
                 archiveArtifacts(
