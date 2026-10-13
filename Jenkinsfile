@@ -40,9 +40,15 @@ pipeline {
             steps {
                 sh 'mvn test'
             }
+
+            post {
+                always {
+                    junit 'target/surefire-reports/*.xml'
+                }
+            }
         }
 
-        stage('Package') {
+        stage('Package') {22
             steps {
                 sh 'mvn package -DskipTests'
             }
